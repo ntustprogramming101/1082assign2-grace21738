@@ -23,6 +23,7 @@ final int BUTTON_RIGHT = 392;
 boolean downPressed = false;
 boolean leftPressed = false;
 boolean rightPressed = false;
+float tmpPress = 0;
 
 //life
 boolean newLife = false;
@@ -43,6 +44,7 @@ float cabbageX , cabbageY;
 
 void setup() {
   size(640, 480, P2D);
+  frameRate(60);
   bg = loadImage("img/bg.jpg");
   life = loadImage("img/life.png");
   robot = loadImage("img/robot.png");
@@ -143,6 +145,11 @@ void draw() {
           gameState = GAME_RUN;
           heartNum = 2;
           newLife = false;
+          
+          //hog
+          hogX = ROG_START_X;
+          hogY = ROG_START_Y;
+          
         }
       }else{
         image( restartNormal , BUTTON_LEFT , BUTTON_UP );
@@ -214,7 +221,7 @@ void draw() {
       if( rightPressed ){
         if( hogMoveX<=hogX ){
           image( groundhogRight , hogMoveX, hogY );
-          hogMoveX += 5;
+          hogMoveX += (BLOCK/15);//15 frames
         }else{
           rightPressed = false;
         }
@@ -243,30 +250,31 @@ void draw() {
 }
 
 void keyPressed(){
-  
-  switch( keyCode ){
-    case LEFT:
-      hogMoveX = hogX;
-      if( hogX>0 ){
-        leftPressed = true;
-        hogX -= BLOCK;
-      }
-      break;
-      
-    case RIGHT:
-      hogMoveX = hogX;
-      if( hogX<560 ){
-        rightPressed = true;
-        hogX += BLOCK;
-      }
-      break;
-      
-    case DOWN:
-      hogMoveY = hogY;
-      if( hogY<400 ){
-        downPressed = true;
-        hogY += BLOCK;
-      }
-      break;   
-   }
+  if( ! leftPressed && ! rightPressed && ! downPressed){ 
+    switch( keyCode ){
+      case LEFT:
+        hogMoveX = hogX;
+        if( hogX>0 ){
+          leftPressed = true;
+          hogX -= BLOCK;
+        }
+        break;
+        
+      case RIGHT:
+        hogMoveX = hogX;
+        if( hogX<560 ){
+          rightPressed = true;
+          hogX += BLOCK;
+        }
+        break;
+        
+      case DOWN:
+        hogMoveY = hogY;
+        if( hogY<400 ){
+          downPressed = true;
+          hogY += BLOCK;
+        }
+        break;   
+     }
+  }
 }
